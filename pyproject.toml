@@ -1,16 +1,11 @@
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "httpplot"
 version = "0.1.0"
-authors = [
-  { name="Dominic Mancini", email="dominicgmancini@gmail.com" },
-]
+authors = [{ name = "Dominic Mancini", email = "dominicgmancini@gmail.com" }]
 description = "A MPL plotting utility that uses http to display plots in the browser."
 readme = "README.md"
 license = { file = "LICENSE" }
-dependencies = [
-  "matplotlib"
-]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
