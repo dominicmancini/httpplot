@@ -1,0 +1,325 @@
+# templates/templates.py
+
+def httpgd():
+    return """
+    <html>
+    <head>
+        <title>httpsplot Viewer</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 0;
+                display: flex;
+                height: 100vh;
+            }
+            #main-display {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 1em;
+                overflow-y: auto;
+            }
+            #thumbnail-bar {
+                width: 200px;
+                background: #f9f9f9;
+                border-left: 1px solid #ddd;
+                overflow-y: auto;
+                padding: 1em 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            #thumbnail-bar img {
+                width: 80%;
+                margin-bottom: 1em;
+                cursor: pointer;
+                border: 2px solid transparent;
+            }
+            #thumbnail-bar img.selected {
+                border-color: #007bff;
+            }
+            #main-img {
+                max-width: 90%;
+                max-height: 90%;
+                border: 1px solid #ccc;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main-display">
+            <img id="main-img" src="" alt="Main Plot">
+        </div>
+        <div id="thumbnail-bar"></div>
+
+        <script>
+            let selectedId = -1;
+            let previousCount = 0;
+
+            async function fetchPlots() {
+                const res = await fetch('/plots');
+                const paths = await res.json();
+                const bar = document.getElementById('thumbnail-bar');
+
+                if (paths.length > previousCount) {
+                    for (let i = previousCount; i < paths.length; i++) {
+                        const img = document.createElement('img');
+                        img.src = paths[i];
+                        img.dataset.plotId = i;
+                        img.onclick = () => showPlot(i);
+                        bar.appendChild(img);
+                    }
+                    showPlot(paths.length - 1);  // Auto-show latest
+                    previousCount = paths.length;
+                }
+            }
+
+            function showPlot(id) {
+                document.getElementById('main-img').src = `/plot/${id}`;
+                const allThumbs = document.querySelectorAll('#thumbnail-bar img');
+                allThumbs.forEach(img => img.classList.remove('selected'));
+                const active = [...allThumbs].find(img => img.dataset.plotId == id);
+                if (active) active.classList.add('selected');
+                selectedId = id;
+            }
+
+            setInterval(fetchPlots, 2000);
+            fetchPlots();
+        </script>
+    </body>
+    </html>
+    """
+def httpgd_2():
+    return """
+    <html>
+    <head>
+        <title>httpsplot Viewer</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 0;
+                display: flex;
+                height: 100vh;
+            }
+            #main-display {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 1em;
+                overflow-y: auto;
+            }
+            #thumbnail-bar {
+                width: 200px;
+                background: #f9f9f9;
+                border-left: 1px solid #ddd;
+                overflow-y: auto;
+                padding: 1em 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            #thumbnail-bar img {
+                width: 80%;
+                margin-bottom: 1em;
+                cursor: pointer;
+                border: 2px solid transparent;
+            }
+            #thumbnail-bar img.selected {
+                border-color: #007bff;
+            }
+            #main-img {
+                max-width: 90%;
+                max-height: 90%;
+                border: 1px solid #ccc;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main-display">
+            <img id="main-img" src="" alt="Main Plot">
+        </div>
+        <div id="thumbnail-bar"></div>
+
+        <script>
+            let selectedId = -1;
+            let previousCount = 0;
+
+            async function fetchPlots() {
+                const res = await fetch('/plots');
+                const paths = await res.json();
+                const bar = document.getElementById('thumbnail-bar');
+
+                if (paths.length > previousCount) {
+                    for (let i = previousCount; i < paths.length; i++) {
+                        const img = document.createElement('img');
+                        img.src = paths[i];
+                        img.dataset.plotId = i;
+                        img.onclick = () => showPlot(i);
+                        bar.appendChild(img);
+                    }
+                    showPlot(paths.length - 1);  // Auto-show latest
+                    previousCount = paths.length;
+
+                    // Scroll to bottom
+                    bar.scrollTop = bar.scrollHeight;
+                }
+            }
+
+            function showPlot(id) {
+                document.getElementById('main-img').src = `/plot/${id}`;
+                const allThumbs = document.querySelectorAll('#thumbnail-bar img');
+                allThumbs.forEach(img => img.classList.remove('selected'));
+                const active = [...allThumbs].find(img => img.dataset.plotId == id);
+                if (active) active.classList.add('selected');
+                selectedId = id;
+            }
+
+            setInterval(fetchPlots, 2000);
+            fetchPlots();
+        </script>
+    </body>
+    </html>
+    """
+
+
+def default():
+    return """
+    <html>
+    <head>
+        <title>Plot Viewer</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 2em;
+            }
+            #plots {
+                display: flex;
+                flex-direction: column;
+                gap: 1em;
+                align-items: center;
+                width: 100%;
+                max-width: 800px;
+                overflow-y: auto;
+            }
+            img {
+                max-width: 100%;
+                border: 1px solid #ccc;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Plot History</h1>
+        <div id="plots"></div>
+        <script>
+            let previousCount = 0;
+
+            async function fetchPlots() {
+                const res = await fetch('/plots');
+                const paths = await res.json();
+                const container = document.getElementById('plots');
+
+                container.innerHTML = paths
+                    .map(p => `<img src="${p}" alt="plot">`)
+                    .join('');
+
+                if (paths.length > previousCount) {
+                    container.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+                    previousCount = paths.length;
+                }
+            }
+
+            setInterval(fetchPlots, 2000);
+            fetchPlots();
+        </script>
+    </body>
+    </html>
+    """
+
+
+
+def index_center_autoscroll():
+    return """
+    <html>
+    <head>
+        <title>Plot Viewer</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 2em;
+            }
+            #plots {
+                display: flex;
+                flex-direction: column;
+                gap: 1em;
+                align-items: center;
+                width: 100%;
+                max-width: 800px;
+                overflow-y: auto;
+            }
+            img {
+                max-width: 100%;
+                border: 1px solid #ccc;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Plot History</h1>
+        <div id="plots"></div>
+        <script>
+            let previousCount = 0;
+
+            async function fetchPlots() {
+                const res = await fetch('/plots');
+                const paths = await res.json();
+                const container = document.getElementById('plots');
+
+                container.innerHTML = paths
+                    .map(p => `<img src="${p}" alt="plot">`)
+                    .join('');
+
+                if (paths.length > previousCount) {
+                    container.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+                    previousCount = paths.length;
+                }
+            }
+
+            setInterval(fetchPlots, 2000);
+            fetchPlots();
+        </script>
+    </body>
+    </html>
+    """
+
+def index_ltr_wrap():
+    return """
+    <html>
+    <head><title>Plot Viewer</title></head>
+    <body>
+        <h1>Plot History</h1>
+        <div id="plots"></div>
+        <script>
+            async function fetchPlots() {
+                const res = await fetch('/plots');
+                const paths = await res.json();
+                document.getElementById('plots').innerHTML = 
+                    paths.map(p => `<img src="${p}" style="max-width: 600px; margin: 1em;">`).join('');
+            }
+            setInterval(fetchPlots, 2000);
+            fetchPlots();
+        </script>
+    </body>
+    </html>
+    """
