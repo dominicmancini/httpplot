@@ -39,4 +39,6 @@ nosetests.xml
 # Scripts
 main.py
 
+# pyenv version
+.python-version
 

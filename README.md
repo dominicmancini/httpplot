@@ -1,21 +1,27 @@
-# httpplot
+# `httpplot`
 ----------------
 
-A lightweight, interactive plotting backend and web viewer for matplotlib; inspired by R's `httpgd`. Plots are displayed in real-time in your browser with a scrollable history of previous plots. Great for live development, exploration, and REPL workflows. 
-<!-- TODO: put a screenshot here -->
+A lightweight, interactive plotting backend and web viewer for matplotlib; inspired by R's `httpgd`. Plots are displayed in real-time in your browser with a scrollable history of previous plots. Great for live development, exploration, and REPL workflows.
+
+`httpplot` UI in browser:
+![httpplot UI](./examples/httpplot_viewer.png)
+
+
+
 ## Features
 
 - Real-time plot updates in the browser
-- Clickable plot history (thumbnail sidebar)
-- Clean, minimal UI using Flask and vanilla JS
+- `httpgd`-inspired UI with a scrollable plot history
+- Clean and minimal using Flask and vanilla JS
 - Save and copy plot images from browser
+
 Get started in only 2 lines of code!
 
 ### Planned Features
 
-- Rich display of dataframes and tabular data
-- Integration as a custom `matplotlib` backend for easy use ( `matplotlib.use("module://httpsplot.backend")`)
-- Extensibility and custom HTML templates for plot viewer.
+- [ ] Rich display of dataframes and tabular data
+- [ ] Integration as a custom `matplotlib` backend for easy use ( `matplotlib.use("module://httpsplot.backend")`)
+- [ ] Extensibility and custom HTML templates for plot viewer.
 
 ## Quick start
 ```bash
@@ -41,7 +47,7 @@ fig, ax = plt.subplots()
 ax.plot([1, 2, 3, 4])
 
 # display plot
-plt.show() 
+plt.show()
 
 # server will automatically end when exiting script/quitting REPL.
 ```
@@ -57,10 +63,6 @@ waitress
 
 ## About
 
-`httpplot` is written by Dominic Mancini (dominicgmancini@gmail.com).
-A data science student passionate about building tools for analytics, workflows, and visualizations. 
-
-`httppplot` is
 
 `httpplot` is released under the [MIT License](https://github.com/domancini/httpplot/blob/main/LICENSE)
 

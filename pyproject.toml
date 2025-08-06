@@ -5,6 +5,11 @@ authors = [{ name = "Dominic Mancini", email = "dominicgmancini@gmail.com" }]
 description = "A MPL plotting utility that uses http to display plots in the browser."
 readme = "README.md"
 license = { file = "LICENSE" }
+dependencies = [
+	"Flask",
+	"matplotlib",
+	"waitress",
+]
 
 [build-system]
 requires = ["setuptools"]

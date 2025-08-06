@@ -6,9 +6,9 @@ import webbrowser
 import tempfile
 import os
 import tempfile
-import matplotlib.pyplot as plt
-import mpld3
-import httpplot.example_plots as ex
+# import matplotlib.pyplot as plt
+# import mpld3
+# import httpplot.example_plots as ex
 
 
 def serve_html(html: str, port: int = 8000):
@@ -17,14 +17,15 @@ def serve_html(html: str, port: int = 8000):
         tmp_path = tmp.name
 
     class CustomHandler(http.server.SimpleHTTPRequestHandler):
+
         def do_get(self):
             if self.path == '/':
                 self.path = '/' + os.path.basename(tmp_path)
             return super().do_GET()
-        
+
         def log_message(self, format, *args):
-            pass # suppress logging
-        
+            pass  # suppress logging
+
     def start_server():
         with socketserver.TCPServer(("", port), CustomHandler) as httpd:
             print(f"Serving at port {port}")
@@ -32,7 +33,6 @@ def serve_html(html: str, port: int = 8000):
 
     thread = threading.Thread(target=start_server, daemon=True)
     thread.start()
-
 
     webbrowser.open(f"http://localhost:{port}/")
 
